@@ -32,6 +32,11 @@ export MAIN_PASSWORD='your_main_password'
 export KINEXON_API_KEY='your_api_key'
 ```
 
+Explanation:
+- POPUP_USERNAME and POPUP_PASSWORD are the login credentials for the **popup** when https://hbl-cloud.kinexon.com/ is visited (Basic HTTP Authentication).
+- MAIN_USERNAME and MAIN_PASSWORD are the credentials for the actual login on the actual, rendered login site (Username + PW are send via payload).
+- KINEXON_API_KEY is the API key that can be created in the user profile under the `Teams` tab. Mind here that you need to confirm your password again to save your profile in order to store the API_KEY.
+
 ### Running the Script
 Once your environment variables are set, run the script:
 
