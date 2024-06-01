@@ -16,6 +16,8 @@ def fetch_team_ids(
 ) -> Union[List[Dict[str, Any]], Tuple[int, str]]:
     """
     Fetch the list of team IDs.
+    Team IDs are currently hardcoded and must be updated if necessary.
+    The IDs can be retrieved from the Kinexon cloud website.
 
     Args:
         session (requests.Session): The session object to use.
@@ -34,11 +36,12 @@ def fetch_team_ids(
         return 400, "Session is None"
 
 
-def fetch_session_ids(
+def fetch_event_ids(
     session: requests.Session, team_id: int, min_time: str, max_time: str
 ) -> Union[List[str], Tuple[int, str]]:
     """
-    Fetch the session IDs for a given team within a specified time range.
+    Fetch the event IDs for a given team within a specified time range.
+    Kinexon calls these events "sessions".
 
     Args:
         session (requests.Session): The session object to use.
@@ -59,8 +62,8 @@ def fetch_session_ids(
     if response.status_code == 200:
         data = response.json()
         if data:
-            session_ids = [session for session in data]
-            return session_ids
+            game_ids = [game for game in data]
+            return game_ids
         else:
             return []
     else:
@@ -86,7 +89,7 @@ def fetch_game_csv_data(
         update_rate (int): The update rate for exported values.
         compress_output (bool): Compress the output.
         use_local_frame_imu (bool): Export accelerometer data in local frame.
-        center_origin (bool): Set the origin of the position data to the center of each field.
+        center_origin (bool): Set the origin of the position data to the center.
         group_by_timestamp (bool): Group players by timestamp.
         players (str): Comma-separated player IDs.
 

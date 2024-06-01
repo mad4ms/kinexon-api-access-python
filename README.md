@@ -1,57 +1,72 @@
-# Kinexon Cloud Authentication Script
+# Kinexon REST API Authentication and Usage Example
 
-Welcome to the Kinexon Cloud Authentication Script. This script performs a two-step authentication process and fetches available games from the Kinexon Cloud. 
-Currently a **WIP**.
-## Features
-- **Popup Authentication:** Log in through a popup URL because why have one login step when you can have two?
-- **Main Site Authentication:** Log in to the main site after the popup, because who doesn't love redundancy?
-- **Fetch Metrics and Events:** Retrieve a list of available metrics and events. Because that's what you actually wanted, right?
-- **Fetch Position files of Games:** That's what I actually wanted, so here we are.
+Welcome to the Kinexon REST API Authentication and Usage Example for Python.
+
+Currently a **WIP**. If you find this repo useful, consider leaving a star, or not. Your choice. Not affiliated with Kinexon.
+
+Used in the soon-to-be-opensource™ framework **BieLeMetrics**, which is a Python project for automated multimodal data processing applied in the paper [Expected Goals Prediction in Professional Handball using Synchronized Event and Positional Data](https://www.researchgate.net/publication/375086950_Expected_Goals_Prediction_in_Professional_Handball_using_Synchronized_Event_and_Positional_Data).
+
+## Overview
+This example demonstrates a comprehensive approach for interacting with the Kinexon REST API. It includes a two-step authentication process, session management with HTTP cookies, and API key handling for secure data access from the Kinexon Cloud.
+
+## Key Features
+- **Two-Step Authentication**: First, authenticate using HTTP Basic Authentication, followed by a session-based login.
+- **Session Management**: Utilizes HTTP cookies to maintain session state across multiple API requests.
+- **API Key Handling**: Demonstrates secure usage of API keys for accessing protected endpoints.
+- **Retrieval Examples**: Shows how to fetch and download positional information and further data.
 
 ## Getting Started
 
 ### Prerequisites
 - Python 3.6+
-- `requests` library
+- `requests` library (`pip install requests`)
 
-You can install the `requests` library using pip:
 
+Clone this repository:
 ```
-pip install requests
-```
-
-### Environment Variables
-Set the following environment variables with your actual credentials and API information:
-
+git clone https://github.com/mad4ms/kinexon-api-access-python
 ```
 
-export POPUP_USERNAME='your_popup_username'
-export POPUP_PASSWORD='your_popup_password'
-export MAIN_USERNAME='your_main_username'
-export MAIN_PASSWORD='your_main_password'
-export KINEXON_API_KEY='your_api_key'
-```
 
+
+## Environment Variables
+Set the following environment variables with your credentials and API information:
+
+```sh
+export SESSION_USERNAME='your_session_username' # username for the popup on the website
+export SESSION_PASSWORD='your_session_password' # password for the popup on the website
+export MAIN_USERNAME='your_main_username' # username for the login site
+export MAIN_PASSWORD='your_main_password' # password for the login site
+export KINEXON_API_KEY='your_api_key' # create API key in profile settings
+```
 Explanation:
-- POPUP_USERNAME and POPUP_PASSWORD are the login credentials for the **popup** when https://hbl-cloud.kinexon.com/ is visited (Basic HTTP Authentication).
-- MAIN_USERNAME and MAIN_PASSWORD are the credentials for the actual login on the actual, rendered login site (Username + PW are send via payload).
-- KINEXON_API_KEY is the API key that can be created in the user profile under the `Teams` tab. Mind here that you need to confirm your password again to save your profile in order to store the API_KEY.
 
-### Running the Script
-Once your environment variables are set, run the script:
+- **SESSION_USERNAME** and **SESSION_PASSWORD**: Credentials for initial authentication using HTTP Basic Authentication.
+- **MAIN_USERNAME** and **MAIN_PASSWORD**: Credentials for the main site authentication using a POST request payload.
+- **KINEXON_API_KEY**: API key created in the user profile under the Teams tab. Ensure to confirm your password again to save your profile and store the API_KEY.
 
+### Usage
+Change into project directory:
+```sh
+cd kinexon-api-access-python
 ```
+Test authentication with:
+```sh
+python src/auth.py
+```
+On success, explore and run the script:
+
+```sh
 python main.py
 ```
-And voila! Watch as the script logs you in twice (because once is never enough) and fetches your precious metrics and events.
+Watch as the script performs the two-step login and fetches a game.
 
-### Troubleshooting
-- Failed to Login: Double-check your credentials. Check with the webiste. We all make typos.
-- Connection Errors: Ensure you have an internet connection. Yes, it’s necessary.
-- Might be prone to API changes due to young age of Kinexon API
-  
-### Contributing
-Feel free to contribute to this project. If you can handle the sarcasm, you're welcome to fork, submit PRs, or open issues.
+## Troubleshooting
+- Failed to Login: Double-check your credentials. Ensure they match those provided by the Kinexon Cloud and are correctly set to the environment.
+- Connection Errors: Ensure you have an active internet connection.
+- API Changes: Be aware that the Kinexon API is young and prone to changes.
+## Contributing
+Feel free to contribute to this project. You're welcome to fork, submit PRs, or open issues.
 
-License
+## License
 This project is licensed under the MIT License.
