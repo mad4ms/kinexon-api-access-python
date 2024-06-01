@@ -34,6 +34,20 @@ def login(session: requests.Session, credentials: Dict[str, str]) -> None:
     )
 
 
+DO_DOWNLOAD = True
+
+
+def login(session: requests.Session, credentials: Dict[str, str]) -> None:
+    authenticate_basic_auth(
+        session,
+        credentials["session_username"],
+        credentials["session_password"],
+    )
+    authenticate_main(
+        session, credentials["main_username"], credentials["main_password"]
+    )
+
+
 def main() -> None:
     """
     Main function to authenticate and fetch metrics and events.
@@ -64,6 +78,7 @@ def main() -> None:
         min_time,
         max_time,
     )
+    print(f"Example game ID: {example_game_id}, time: {example_game_time}")
 
     # Print the list of game IDs
     for game in list_game_ids:
