@@ -2,6 +2,9 @@
 
 Welcome to the Kinexon REST API Authentication and Usage Example for Python.
 
+Due to the lack of available documentation on the Kinexon API (i'm not mad, just disappointed), I am providing this open source script to assist you.
+
+
 Currently a **WIP**. If you find this repo useful, consider leaving a star, or not. Your choice. Not affiliated with Kinexon.
 
 Used in the soon-to-be-opensource™ framework **BieLeMetrics**, which is a Python project for automated multimodal data processing applied in the paper [Expected Goals Prediction in Professional Handball using Synchronized Event and Positional Data](https://www.researchgate.net/publication/375086950_Expected_Goals_Prediction_in_Professional_Handball_using_Synchronized_Event_and_Positional_Data).
@@ -29,7 +32,7 @@ git clone https://github.com/mad4ms/kinexon-api-access-python
 
 
 
-## Environment Variables
+### Credentials & Environment Variables
 Set the following environment variables with your credentials and API information:
 
 ```sh
