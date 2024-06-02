@@ -1,96 +1,95 @@
-"""
-Authenticate with the Kinexon API using requests.
-"""
+""" This module provides functions to authenticate with the Kinexon API. """
 
 import os
-from requests import Session
+import logging
+from typing import Dict
+from requests import Session, HTTPError
 from requests.auth import HTTPBasicAuth
-from requests.exceptions import HTTPError
 
-# Endpoints
-SESSION_LOGIN_URL: str = "https://hbl-cloud.kinexon.com/"
-LOGIN_URL: str = "https://hbl-cloud.kinexon.com/checklogin"
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-def load_credentials() -> dict[str, str]:
+def load_credentials() -> Dict[str, str]:
     """
     Load credentials from environment variables.
 
     Returns:
-        dict[str, str]: The credentials as a dictionary.
+        dict: The credentials as a dictionary.
     """
     return {
-        "session_username": os.getenv("SESSION_USERNAME", ""),
-        "session_password": os.getenv("SESSION_PASSWORD", ""),
-        "main_username": os.getenv("MAIN_USERNAME", ""),
-        "main_password": os.getenv("MAIN_PASSWORD", ""),
-        "API_KEY": os.getenv("KINEXON_API_KEY", ""),
+        "username_kinexon_session": os.getenv("USERNAME_KINEXON_SESSION", ""),
+        "password_kinexon_session": os.getenv("PASSWORD_KINEXON_SESSION", ""),
+        "endpoint_kinexon_session": os.getenv("ENDPOINT_KINEXON_SESSION", ""),
+        "username_kinexon_main": os.getenv("USERNAME_KINEXON_MAIN", ""),
+        "password_kinexon_main": os.getenv("PASSWORD_KINEXON_MAIN", ""),
+        "endpoint_kinexon_main": os.getenv("ENDPOINT_KINEXON_MAIN", ""),
+        "api_key_kinexon": os.getenv("API_KEY_KINEXON", ""),
+        "endpoint_kinexon_api": os.getenv("ENDPOINT_KINEXON_API", ""),
     }
 
 
-def authenticate_basic_auth(
-    session: Session, session_username: str, session_password: str
+def authenticate(
+    login_session: Session,
+    username: str,
+    password: str,
+    endpoint: str,
+    use_basic_auth: bool = False,
 ) -> None:
     """
-    Authenticate with the popup login URL using Basic HTTP Authentication.
+    Authenticate with the given endpoint.
 
     Args:
-        session (requests.Session): The session object to use.
-        session_username (str): The username for the popup authentication.
-        session_password (str): The password for the popup authentication.
+        login_session (Session): The session object to use.
+        username (str): The username for authentication.
+        password (str): The password for authentication.
+        endpoint (str): The endpoint for authentication.
+        use_basic_auth (bool): Whether to use basic HTTP authentication.
 
     Raises:
-        requests.exceptions.HTTPError: If authentication fails.
+        HTTPError: If authentication fails.
     """
-    session.auth = HTTPBasicAuth(session_username, session_password)
-    response = session.get(SESSION_LOGIN_URL)
+    if use_basic_auth:
+        login_session.auth = HTTPBasicAuth(username, password)
+        response = login_session.get(endpoint)
+    else:
+        payload = {"login": {"username": username, "password": password}}
+        response = login_session.post(endpoint, json=payload)
+
     if response.status_code != 200:
-        raise HTTPError(f"Failed to login to {SESSION_LOGIN_URL}")
-    print(f"Successfully logged in to {SESSION_LOGIN_URL}")
+        logger.error(
+            f"Failed to login to {endpoint}: {response.status_code} "
+            f"{response.text}"
+        )
+        response.raise_for_status()
 
-
-def authenticate_main(
-    session: Session, main_username: str, main_password: str
-) -> None:
-    """
-    Authenticate with the main login URL.
-
-    Args:
-        session (requests.Session): The session object to use.
-        main_username (str): The username for the main authentication.
-        main_password (str): The password for the main authentication.
-
-    Raises:
-        requests.exceptions.HTTPError: If authentication fails.
-    """
-    login_payload = {
-        "login": {"username": main_username, "password": main_password}
-    }
-    response = session.post(LOGIN_URL, json=login_payload)
-    if response.status_code != 200:
-        raise HTTPError(f"Failed to login to {LOGIN_URL}")
-    print(f"Successfully logged in to {LOGIN_URL}")
+    logger.info(f"Successfully logged in to {endpoint}")
 
 
 if __name__ == "__main__":
     # Example usage
-    with Session() as my_session:
-        # load credentials from environment variables
-        credentials = load_credentials()
+    credentials = load_credentials()
 
-        authenticate_basic_auth(
-            my_session,
-            credentials["session_username"],
-            credentials["session_password"],
-        )
-        authenticate_main(
-            my_session,
-            credentials["main_username"],
-            credentials["main_password"],
-        )
-
-        print(">> Login successful! 🥳 🥳 🥳")
-        print(
-            "\t>>You can now make requests to the Kinexon API."
-            " See data_retrieval.py for an example."
-        )
+    with Session() as my_login_session:
+        try:
+            authenticate(
+                my_login_session,
+                credentials["username_kinexon_session"],
+                credentials["password_kinexon_session"],
+                credentials["endpoint_kinexon_session"],
+                use_basic_auth=True,
+            )
+            authenticate(
+                my_login_session,
+                credentials["username_kinexon_main"],
+                credentials["password_kinexon_main"],
+                credentials["endpoint_kinexon_main"],
+            )
+            logger.info("Login successful! 🥳 🥳 🥳")
+            logger.info(
+                "You can now make requests to the Kinexon API."
+                " See data_retrieval.py for an example."
+            )
+        except HTTPError as e:
+            logger.exception(f"An error occurred during authentication: {e}")

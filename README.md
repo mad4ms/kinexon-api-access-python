@@ -36,18 +36,32 @@ git clone https://github.com/mad4ms/kinexon-api-access-python
 Set the following environment variables with your credentials and API information:
 
 ```sh
-export SESSION_USERNAME='your_session_username' # username for the popup on the website
-export SESSION_PASSWORD='your_session_password' # password for the popup on the website
-export MAIN_USERNAME='your_main_username' # username for the login site
-export MAIN_PASSWORD='your_main_password' # password for the login site
-export KINEXON_API_KEY='your_api_key' # create API key in profile settings
+export USERNAME_KINEXON_SESSION='your_session_username' # Username for the popup on the website
+export PASSWORD_KINEXON_SESSION='your_session_password' # Password for the popup on the website
+export ENDPOINT_KINEXON_SESSION='https://your_session_endpoint' # Endpoint for the session login
+
+export USERNAME_KINEXON_MAIN='your_main_username' # Username for the main login site
+export PASSWORD_KINEXON_MAIN='your_main_password' # Password for the main login site
+export ENDPOINT_KINEXON_MAIN='https://your_main_endpoint' # Endpoint for the main login
+
+export API_KEY_KINEXON='your_api_key' # API key created in profile settings
+export ENDPOINT_KINEXON_API='https://your_api_endpoint' # Base URL for the Kinexon API
+
 ```
 Explanation:
 
-- **SESSION_USERNAME** and **SESSION_PASSWORD**: Credentials for initial authentication using HTTP Basic Authentication.
-- **MAIN_USERNAME** and **MAIN_PASSWORD**: Credentials for the main site authentication using a POST request payload.
-- **KINEXON_API_KEY**: API key created in the user profile under the Teams tab. Ensure to confirm your password again to save your profile and store the API_KEY.
+- **USERNAME_KINEXON_SESSION** and **PASSWORD_KINEXON_SESSION**: Credentials for initial authentication using HTTP Basic Authentication. **ENDPOINT_KINEXON_SESSION** is usually `https://hbl-cloud.kinexon.com/`
+- **USERNAME_KINEXON_MAIN** and **PASSWORD_KINEXON_MAIN**: Credentials for the main site authentication using a POST request payload. **ENDPOINT_KINEXON_MAIN** is usually `https://hbl-cloud.kinexon.com/checklogin/`
+- **KINEXON_API_KEY**: API key created in the user profile under the Teams tab. Ensure to confirm your password again to save your profile and store the API_KEY. **ENDPOINT_KINEXON_API**  is usually `https://hbl-cloud.kinexon.com/public/v1/`
 
+Hack for faster auth:
+- Create a `.env` file in the repo with credentials (will be ignored by .gitignore):
+```
+USERNAME_KINEXON_SESSION='your_session_username'
+PASSWORD_KINEXON_SESSION='your_session_password'
+...
+```
+`python-dotenv` package will detect `.env` file and use it. No need for cumbersome environment entries. 
 ### Usage
 Change into project directory:
 ```sh
