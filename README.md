@@ -1,5 +1,7 @@
 # Kinexon REST API Authentication and Usage Example
 
+![API Status](./badge.svg)
+
 Welcome to the Kinexon REST API Authentication and Usage Example for Python.
 
 Due to the lack of available documentation on the Kinexon API (i'm not mad, just disappointed), I am providing this open source script to assist you.
