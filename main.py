@@ -34,17 +34,29 @@ def login(session: requests.Session, credentials: Dict[str, str]) -> None:
     )
 
 
-DO_DOWNLOAD = True
+DO_DOWNLOAD = False
 
 
 def login(session: requests.Session, credentials: Dict[str, str]) -> None:
-    authenticate_basic_auth(
+    """
+    Authenticate with the session and main login URLs.
+
+    Args:
+        session (requests.Session): The session object to use.
+        credentials (Dict[str, str]): The credentials to use.
+    """
+    authenticate(
         session,
-        credentials["session_username"],
-        credentials["session_password"],
+        credentials["username_kinexon_session"],
+        credentials["password_kinexon_session"],
+        credentials["endpoint_kinexon_session"],
+        use_basic_auth=True,
     )
-    authenticate_main(
-        session, credentials["main_username"], credentials["main_password"]
+    authenticate(
+        session,
+        credentials["username_kinexon_main"],
+        credentials["password_kinexon_main"],
+        credentials["endpoint_kinexon_main"],
     )
 
 

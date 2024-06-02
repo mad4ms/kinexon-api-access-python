@@ -16,8 +16,6 @@ def fetch_team_ids(
 ) -> Union[List[Dict[str, Any]], Tuple[int, str]]:
     """
     Fetch the list of team IDs.
-    Team IDs are currently hardcoded and must be updated if necessary.
-    The IDs can be retrieved from the Kinexon cloud website.
 
     Args:
         session (requests.Session): The session object to use.
