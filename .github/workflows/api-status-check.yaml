@@ -51,15 +51,22 @@ jobs:
         curl -o badge.svg "https://img.shields.io/badge/Kinexon_API_unavailable-red"
 
     - name: Update README with Badge
+      run: |
+        sed -i 's/!\[API Status\](.*)/![API Status](\.\/badge\.svg)/' README.md
+
+    - name: Commit and Push Changes
       env:
         PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
-        sed -i 's/!\[API Status\](.*)/![API Status](\.\/badge\.svg)/' README.md
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add badge.svg README.md
-        git commit -m 'Update API status badge'
-        git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git badge-updates
+        if git diff-index --quiet HEAD; then
+          echo "No changes to commit"
+        else
+          git commit -m 'Update API status badge'
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git badge-updates
+        fi
 
     - name: Rebase Badge Updates onto Main
       env:
