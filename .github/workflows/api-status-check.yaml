@@ -65,23 +65,5 @@ jobs:
           echo "No changes to commit"
         else
           git commit -m 'Update API status badge'
-          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git badge-updates
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git main
         fi
-
-    - name: Rebase Badge Updates onto Main
-      env:
-        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-      run: |
-        git fetch origin
-        git checkout badge-updates
-        git rebase origin/main -X ours
-        git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git badge-updates --force
-
-    - name: Fast-forward main with badge-updates
-      env:
-        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-      run: |
-        git checkout main
-        git pull origin main
-        git merge --ff-only badge-updates
-        git push origin main

@@ -50,15 +50,6 @@ export API_KEY_KINEXON='your_api_key' # API key created in profile settings
 export ENDPOINT_KINEXON_API='https://your_api_endpoint' # Base URL for the Kinexon API
 
 
-## Environment Variables
-Set the following environment variables with your credentials and API information:
-
-```sh
-export SESSION_USERNAME='your_session_username' # username for the popup on the website
-export SESSION_PASSWORD='your_session_password' # password for the popup on the website
-export MAIN_USERNAME='your_main_username' # username for the login site
-export MAIN_PASSWORD='your_main_password' # password for the login site
-export KINEXON_API_KEY='your_api_key' # create API key in profile settings
 ```
 Explanation:
 
