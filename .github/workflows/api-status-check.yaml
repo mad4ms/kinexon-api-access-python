@@ -31,14 +31,14 @@ jobs:
     - name: Authenticate and Check API Status
       id: check_status
       env:
-        USERNAME_KINEXON_SESSION: ${{ secrets.USERNAME_KINEXON_SESSION }}
+        USERNAME_KINEXON_SESSION: ${{ vars.USERNAME_KINEXON_SESSION }}
         PASSWORD_KINEXON_SESSION: ${{ secrets.PASSWORD_KINEXON_SESSION }}
-        ENDPOINT_KINEXON_SESSION: ${{ secrets.ENDPOINT_KINEXON_SESSION }}
-        USERNAME_KINEXON_MAIN: ${{ secrets.USERNAME_KINEXON_MAIN }}
+        ENDPOINT_KINEXON_SESSION: ${{ vars.ENDPOINT_KINEXON_SESSION }}
+        USERNAME_KINEXON_MAIN: ${{ vars.USERNAME_KINEXON_MAIN }}
         PASSWORD_KINEXON_MAIN: ${{ secrets.PASSWORD_KINEXON_MAIN }}
-        ENDPOINT_KINEXON_MAIN: ${{ secrets.ENDPOINT_KINEXON_MAIN }}
+        ENDPOINT_KINEXON_MAIN: ${{ vars.ENDPOINT_KINEXON_MAIN }}
         API_KEY_KINEXON: ${{ secrets.API_KEY_KINEXON }}
-        ENDPOINT_KINEXON_API: ${{ secrets.ENDPOINT_KINEXON_API }}
+        ENDPOINT_KINEXON_API: ${{ vars.ENDPOINT_KINEXON_API }}
       run: |
         python tests/check_api_status.py
 
