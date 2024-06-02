@@ -74,7 +74,7 @@ jobs:
       run: |
         git fetch origin
         git checkout badge-updates
-        git rebase origin/main
+        git rebase origin/main -X ours
         git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git badge-updates --force
 
     - name: Fast-forward main with badge-updates
