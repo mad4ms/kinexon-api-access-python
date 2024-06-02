@@ -1,4 +1,4 @@
-name: API Status Check
+name: API Status Check and Update
 
 on:
   schedule:
@@ -9,14 +9,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-api:
+  update-badge:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
-      with:
-        ref: badge-updates
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -53,10 +51,30 @@ jobs:
         curl -o badge.svg "https://img.shields.io/badge/Kinexon_API_unavailable-red"
 
     - name: Update README with Badge
+      env:
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
         sed -i 's/!\[API Status\](.*)/![API Status](\.\/badge\.svg)/' README.md
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add badge.svg README.md
         git commit -m 'Update API status badge'
-        git push origin badge-updates
+        git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git badge-updates
+
+    - name: Rebase Badge Updates onto Main
+      env:
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+      run: |
+        git fetch origin
+        git checkout badge-updates
+        git rebase origin/main
+        git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git badge-updates --force
+
+    - name: Fast-forward main with badge-updates
+      env:
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+      run: |
+        git checkout main
+        git pull origin main
+        git merge --ff-only badge-updates
+        git push origin main
