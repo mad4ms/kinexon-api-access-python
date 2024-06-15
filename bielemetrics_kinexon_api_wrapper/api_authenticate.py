@@ -64,32 +64,44 @@ def authenticate(
         )
         response.raise_for_status()
 
-    logger.info(f"Successfully logged in to {endpoint}")
+    logger.debug(f"Successfully logged in to {endpoint}")
+
+
+def login(creds: Dict[str, str]) -> Session:
+    """
+    Authenticate with the Kinexon API using the provided credentials.
+
+    Args:
+        creds (dict): The credentials to use for authentication.
+
+    Returns:
+        Session: The authenticated session object.
+    """
+    session = Session()
+    authenticate(
+        session,
+        creds["username_kinexon_session"],
+        creds["password_kinexon_session"],
+        creds["endpoint_kinexon_session"],
+        use_basic_auth=True,
+    )
+    authenticate(
+        session,
+        creds["username_kinexon_main"],
+        creds["password_kinexon_main"],
+        creds["endpoint_kinexon_main"],
+    )
+    return session
 
 
 if __name__ == "__main__":
     # Example usage
     credentials = load_credentials()
 
-    with Session() as my_login_session:
-        try:
-            authenticate(
-                my_login_session,
-                credentials["username_kinexon_session"],
-                credentials["password_kinexon_session"],
-                credentials["endpoint_kinexon_session"],
-                use_basic_auth=True,
-            )
-            authenticate(
-                my_login_session,
-                credentials["username_kinexon_main"],
-                credentials["password_kinexon_main"],
-                credentials["endpoint_kinexon_main"],
-            )
-            logger.info("Login successful! 🥳 🥳 🥳")
-            logger.info(
-                "You can now make requests to the Kinexon API."
-                " See data_retrieval.py for an example."
-            )
-        except HTTPError as e:
-            logger.exception(f"An error occurred during authentication: {e}")
+    my_login_session = login(credentials)
+    try:
+        login(credentials)
+        logger.info("Login successful! 🥳 🥳 🥳")
+        logger.info("You can now make requests to the Kinexon API.")
+    except HTTPError as e:
+        logger.exception(f"An error occurred during authentication: {e}")

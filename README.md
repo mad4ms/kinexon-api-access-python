@@ -1,3 +1,64 @@
+
+# Bielemetrics Kinexon API Wrapper
+
+This package provides a wrapper for the Kinexon API, including functions for authentication and data retrieval. It simplifies interacting with the Kinexon REST API, making it easier to authenticate and retrieve data.
+
+## Table of Contents
+- [Bielemetrics Kinexon API Wrapper](#bielemetrics-kinexon-api-wrapper)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+- [Bielemetrics Kinexon API Wrapper](#bielemetrics-kinexon-api-wrapper-1)
+  - [Table of Contents](#table-of-contents-1)
+  - [Installation](#installation-1)
+  - [Usage](#usage)
+    - [Authentication](#authentication)
+    - [Fetching Data](#fetching-data)
+- [Kinexon REST API Authentication and Usage Example](#kinexon-rest-api-authentication-and-usage-example)
+  - [Overview](#overview)
+  - [Key Features](#key-features)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Credentials \& Environment Variables](#credentials--environment-variables)
+    - [Usage](#usage-1)
+  - [Troubleshooting](#troubleshooting)
+  - [Contributing](#contributing)
+  - [License](#license)
+
+## Installation
+
+You can install the package using pip:
+
+```bash
+pip install bielemetrics-kinexon-api-wrapper
+```
+
+## Usage
+### Authentication
+First, load your credentials and authenticate with the Kinexon API.
+
+```python
+import requests
+from bielemetrics_kinexon_api_wrapper import login
+
+# Load credentials from environment variables
+credentials = load_credentials()
+
+# Create a session by logging in
+session_kinexon = login(credentials)
+```
+
+    
+### Fetching Data
+You can fetch different types of data using the provided functions.
+
+Fetch Team IDs
+```python
+from bielemetrics_kinexon_api_wrapper import fetch_team_ids
+
+team_ids = fetch_team_ids(session)
+print(team_ids)
+```
+
 # Kinexon REST API Authentication and Usage Example
 
 ![API Status](./badge.svg)
