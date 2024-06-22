@@ -57,12 +57,19 @@ def authenticate(
         except Exception as e:
             response = login_session.get(endpoint, verify=False)
             logger.warning(
-                f"Warning. SSL certificate not verified for endpoint {endpoint}: Error: {e}"
+                f"SSL certificate not verified for endpoint {endpoint}: Error: {e}"
             )
             pass
     else:
         payload = {"login": {"username": username, "password": password}}
-        response = login_session.post(endpoint, json=payload)
+        try:
+            response = login_session.post(endpoint, json=payload)
+        except Exception as e:
+            response = login_session.post(endpoint, json=payload, verify=False)
+            logger.warning(
+                f"SSL certificate not verified for endpoint {endpoint}: Error: {e}"
+            )
+            pass
 
     if response.status_code != 200:
         logger.error(
