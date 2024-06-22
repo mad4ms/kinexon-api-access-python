@@ -52,7 +52,14 @@ def authenticate(
     """
     if use_basic_auth:
         login_session.auth = HTTPBasicAuth(username, password)
-        response = login_session.get(endpoint)
+        try:
+            response = login_session.get(endpoint)
+        except Exception as e:
+            response = login_session.get(endpoint, verify=False)
+            logger.warning(
+                f"Warning. SSL certificate not verified for endpoint {endpoint}: Error: {e}"
+            )
+            pass
     else:
         payload = {"login": {"username": username, "password": password}}
         response = login_session.post(endpoint, json=payload)
