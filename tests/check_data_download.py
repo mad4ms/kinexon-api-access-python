@@ -12,7 +12,7 @@ from bielemetrics_kinexon_api_wrapper import (
     fetch_game_csv_data,
 )
 
-DO_DOWNLOAD = True
+DO_DOWNLOAD = False
 
 
 def main() -> None:

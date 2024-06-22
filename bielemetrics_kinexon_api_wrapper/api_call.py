@@ -44,6 +44,7 @@ def make_api_request(
             data=data,
             json=json_data,
             stream=stream,
+            verify=False,
         )
         response.raise_for_status()
 
