@@ -61,9 +61,14 @@ def fetch_event_ids(
     params = {"min": min_time, "max": max_time}
     headers = {"Accept": "application/json"}
 
-    return make_api_request(
+    response = make_api_request(
         session, url, method="GET", headers=headers, params=params
     )
+
+    if response.headers.get("Content-Type") == "application/json":
+        return response.json()
+    else:
+        return response.status_code, response.text
 
 
 def get_available_metrics_and_events(
@@ -85,9 +90,14 @@ def get_available_metrics_and_events(
     params = {"apiKey": api_key}
     headers = {"Accept": "*/*"}
 
-    return make_api_request(
+    response = make_api_request(
         session, url, method="GET", headers=headers, params=params
     )
+
+    if response.status_code == 200:
+        return response
+    else:
+        return response.status_code, response.text
 
 
 def fetch_game_csv_data(
@@ -133,29 +143,27 @@ def fetch_game_csv_data(
 
     headers = {"Accept": "text/csv"}
 
+    print(f"Fetching CSV data for session ID: {session_id} ...")
+
     response = make_api_request(
         session, url, method="GET", headers=headers, params=params, stream=True
     )
 
-    if isinstance(response, bytes):
-        total_size = int(
-            session.head(url, headers=headers, params=params).headers.get(
-                "content-length", 0
-            )
-        )
-        chunk_size = 1024
+    if response.status_code == 200:
+        total_size = int(response.headers.get("content-length", 0))
+        chunk_size = 1048576  # 1 MB
         csv_data = bytearray()
 
         with tqdm(
             total=total_size, unit="B", unit_scale=True, desc="Downloading CSV"
         ) as progress_bar:
-            for chunk in response:
+            for chunk in response.iter_content(chunk_size=chunk_size):
                 csv_data.extend(chunk)
                 progress_bar.update(len(chunk))
 
         return bytes(csv_data)
     else:
-        return response
+        raise Exception(f"Failed to download CSV data: {response.status_code}")
 
 
 if __name__ == "__main__":

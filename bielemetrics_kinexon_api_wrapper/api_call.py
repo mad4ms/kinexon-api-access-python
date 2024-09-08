@@ -17,6 +17,50 @@ def make_api_request(
     data: Dict[str, Any] = None,
     json_data: Dict[str, Any] = None,
     stream: bool = False,
+) -> requests.Response:
+    """
+    Make a REST API request.
+
+    Args:
+        session (requests.Session): The session object to use.
+        url (str): The endpoint URL.
+        method (str): The HTTP method (GET, POST, PUT, DELETE).
+        headers (dict): The headers for the request.
+        params (dict): The query parameters for the request.
+        data (dict): The form data for POST/PUT requests.
+        json_data (dict): The JSON data for POST/PUT requests.
+        stream (bool): Whether to stream the response (useful for large files).
+
+    Returns:
+        requests.Response: The response object.
+    """
+    try:
+        response = session.request(
+            method,
+            url,
+            headers=headers,
+            params=params,
+            data=data,
+            json=json_data,
+            stream=stream,
+        )
+        response.raise_for_status()
+
+        return response  # Return the entire response object
+    except requests.RequestException as e:
+        logger.error(f"Request failed: {e}")
+        raise  # Re-raise the exception for the caller to handle
+
+
+def make_api_request_old(
+    session: requests.Session,
+    url: str,
+    method: str = "GET",
+    headers: Dict[str, str] = None,
+    params: Dict[str, Any] = None,
+    data: Dict[str, Any] = None,
+    json_data: Dict[str, Any] = None,
+    stream: bool = False,
 ) -> Union[Dict[str, Any], Tuple[int, str]]:
     """
     Make a REST API request.
@@ -44,7 +88,7 @@ def make_api_request(
             data=data,
             json=json_data,
             stream=stream,
-            verify=False,
+            # verify=False,
         )
         response.raise_for_status()
 

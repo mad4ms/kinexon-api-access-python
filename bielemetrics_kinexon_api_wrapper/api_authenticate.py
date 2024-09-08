@@ -19,14 +19,27 @@ def load_credentials() -> Dict[str, str]:
         dict: The credentials as a dictionary.
     """
     return {
-        "username_kinexon_session": os.getenv("USERNAME_KINEXON_SESSION", ""),
-        "password_kinexon_session": os.getenv("PASSWORD_KINEXON_SESSION", ""),
-        "endpoint_kinexon_session": os.getenv("ENDPOINT_KINEXON_SESSION", ""),
-        "username_kinexon_main": os.getenv("USERNAME_KINEXON_MAIN", ""),
-        "password_kinexon_main": os.getenv("PASSWORD_KINEXON_MAIN", ""),
-        "endpoint_kinexon_main": os.getenv("ENDPOINT_KINEXON_MAIN", ""),
-        "api_key_kinexon": os.getenv("API_KEY_KINEXON", ""),
-        "endpoint_kinexon_api": os.getenv("ENDPOINT_KINEXON_API", ""),
+        "ENDPOINT_KINEXON_SESSION": os.getenv("ENDPOINT_KINEXON_SESSION", ""),
+        "ENDPOINT_KINEXON_MAIN": os.getenv("ENDPOINT_KINEXON_MAIN", ""),
+        "ENDPOINT_KINEXON_API": os.getenv("ENDPOINT_KINEXON_API", ""),
+        "USERNAME_KINEXON_SESSION": os.getenv("USERNAME_KINEXON_SESSION", ""),
+        "USERNAME_KINEXON_MAIN": os.getenv("USERNAME_KINEXON_MAIN", ""),
+        "PASSWORD_KINEXON_SESSION": os.getenv("PASSWORD_KINEXON_SESSION", ""),
+        "PASSWORD_KINEXON_MAIN": os.getenv("PASSWORD_KINEXON_MAIN", ""),
+        "API_KEY_KINEXON": os.getenv("API_KEY_KINEXON", ""),
+        "API_KEY_SPORTRADAR": os.getenv("API_KEY_SPORTRADAR", ""),
+        "ENDPOINT_STORAGE_NEXTCLOUD": os.getenv(
+            "ENDPOINT_STORAGE_NEXTCLOUD", ""
+        ),
+        "USERNAME_STORAGE_NEXTCLOUD": os.getenv(
+            "USERNAME_STORAGE_NEXTCLOUD", ""
+        ),
+        "PASSWORD_STORAGE_NEXTCLOUD": os.getenv(
+            "PASSWORD_STORAGE_NEXTCLOUD", ""
+        ),
+        "PATH_STORAGE_IN_NEXTCLOUD": os.getenv(
+            "PATH_STORAGE_IN_NEXTCLOUD", ""
+        ),
     }
 
 
@@ -94,16 +107,16 @@ def login(creds: Dict[str, str]) -> Session:
     session = Session()
     authenticate(
         session,
-        creds["username_kinexon_session"],
-        creds["password_kinexon_session"],
-        creds["endpoint_kinexon_session"],
+        creds["USERNAME_KINEXON_SESSION"],
+        creds["PASSWORD_KINEXON_SESSION"],
+        creds["ENDPOINT_KINEXON_SESSION"],
         use_basic_auth=True,
     )
     authenticate(
         session,
-        creds["username_kinexon_main"],
-        creds["password_kinexon_main"],
-        creds["endpoint_kinexon_main"],
+        creds["USERNAME_KINEXON_MAIN"],
+        creds["PASSWORD_KINEXON_MAIN"],
+        creds["ENDPOINT_KINEXON_MAIN"],
     )
     return session
 
