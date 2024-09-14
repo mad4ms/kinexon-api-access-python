@@ -30,9 +30,26 @@ def fetch_team_ids(
 
     # Assuming team_data is fetched from an endpoint, currently hardcoded
     team_data = [
+        {"id": 32, "name": "VfL Gummersbach"},
+        {"id": 2, "name": "TV Bittenfeld"},
+        {"id": 8, "name": "TSV Hannover-Burgdorf"},
+        {"id": 18, "name": "THW Kiel"},
+        {"id": 33, "name": "ThSV Eisenach"},
         {"id": 5, "name": "TBV Lemgo Lippe"},
-        {"id": 6, "name": "Rhein-Neckar Löwen"},
+        {"id": 12, "name": "SG Flensburg-Handewitt"},
+        {"id": 16, "name": "SC Magdeburg"},
+        {"id": 9, "name": "SC DHfK Leipzig"},
+        {"id": 7, "name": "Rhein-Neckar Löwen"},
+        {"id": 6, "name": "MT Melsungen"},
+        {"id": 23, "name": "HSV Hamburg"},
+        {"id": 3, "name": "HSG Wetzlar"},
+        {"id": 2, "name": "HC Erlangen"},
+        {"id": 10, "name": "HBW Balingen-Weilstetten"},
+        {"id": 13, "name": "Füchse Berlin"},
+        {"id": 11, "name": "Frisch Auf Göppingen"},
+        {"id": 14, "name": "Bergischer HC"},
     ]
+
     return team_data
 
 
